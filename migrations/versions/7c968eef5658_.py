@@ -21,10 +21,8 @@ def upgrade():
     op.add_column('todos', sa.Column(
         'completed', sa.Boolean(), nullable=True))
 
-
-op.execute('UPDATE todos SET completed = False WHERE completed IS NULL;')
-
-op.alter_column('todos', 'completed', nullable=False)
+    op.execute('UPDATE todos SET completed = False WHERE completed IS NULL;')
+    op.alter_column('todos', 'completed', nullable=False)
 
 
 # ### end Alembic commands ###
