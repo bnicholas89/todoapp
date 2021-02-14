@@ -11,6 +11,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+# Our file app.py is refered to as our server in the model, view, controller context
 # Our Todo class is the model and the index.html is the view
 
 
@@ -19,9 +20,18 @@ class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(), nullable=False)
     completed = db.Column(db.Boolean, nullable=False)
+    list_id = db.Column(db.Integer, db.ForeignKey(
+        'todolists.id'), nullable=False)
 
     def __repr__(self):
         return f'<Todo {self.id} {self.description}>'
+
+
+class TodoList(db.Model):
+    __tablename__ = 'todolists'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(), nullable=False)
+    todos = db.relationship('Todo', backref='list', lazy=True)
 
 # index is the controller in this app
 
